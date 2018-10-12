@@ -8,7 +8,7 @@ app.set('view engine', 'hbs')
 hbs.registerPartials(__dirname + '/views/partials')
 app.use(express.static(__dirname + '/css'))
 const fs = require('fs');
-const hbs = require('hbs');
+
 
 app.use(express.static(__dirname + '/public'));
 
@@ -25,6 +25,10 @@ app.get('/provider_login', (req, res) => {
 
 app.get('/dashboard', (req, res) => {
 	res.render('dashboard.hbs')
+})
+
+app.get('/providerpage1', (req, res)=>{
+    res.render('providerpage1.hbs')
 })
 
 app.listen(process.env.PORT || 8080, () => {
