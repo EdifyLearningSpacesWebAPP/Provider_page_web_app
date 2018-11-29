@@ -4,7 +4,7 @@ var mysql = require('mysql');
 // var passport = require('passport');
 // var LocalStrategy = require('passport-local').Strategy;
 var bcrypt = require('bcrypt-nodejs');
-var bcrypt2 = require('bcrypt');
+// var bcrypt2 = require('bcrypt');
 // var async = require('async');
 var crypto = require('crypto');
 
@@ -125,15 +125,15 @@ app.get('/status', userSessionCheck, (request, response) => {
         console.log(resolved);
          response.render('status.hbs', {
             fireplanStatus: resolved['fireplan'].status,
-            fireplanNotes: resolved['fireplan'].admin_notes,
+            fireplanNotes: resolved['fireplan'].adminnotes,
             criminalStatus: resolved['criminal'].status,
-            criminalNotes: resolved['criminal'].admin_notes,
+            criminalNotes: resolved['criminal'].adminnotes,
             siteplanStatus: resolved['siteplan'].status,
-            siteplanNotes: resolved['siteplan'].admin_notes,
+            siteplanNotes: resolved['siteplan'].adminnotes,
             refStatus: resolved['references'].status,
-            refNotes: resolved['references'].admin_notes,
+            refNotes: resolved['references'].adminnotes,
             floorplanStatus: resolved['floorplan'].status,
-            floorplanNotes: resolved['floorplan'].admin_notes,
+            floorplanNotes: resolved['floorplan'].adminnotes,
 
         })
 
@@ -142,30 +142,8 @@ app.get('/status', userSessionCheck, (request, response) => {
         response.send('error');
     });
 
-    // db.loadStatus(22345);
-    // db.loadStatus(32345);
-
-    // console.log(data);
-    // console.log(resolved);
-
-
-    // response.render('status.hbs', {
-    //     title: 'Status Page',
-    //     userData1: testData.provider_list_data.providers[3],
-    //     userData2: testData.provider_list_data.providers[6],
-    //     userData3: testData.provider_list_data.providers[0],
-    //     userData4: testData.notes
-    // });
 });
 
-app.post('/status', (request, response) => {
-    db.retrievelicenses(1)
-    .then((resolved) => {
-             response.render('status.hbs', {
-                data: resolved
-            })});
-
-});
 
 
 app.post('/status', (req, res) => {

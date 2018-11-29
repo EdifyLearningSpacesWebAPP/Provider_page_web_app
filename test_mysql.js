@@ -12,20 +12,25 @@ function createConnection() {
 
 
 
-  var con = mysql.createConnection({
+var con = mysql.createConnection({
 
-      host: "localhost",
-        user: "root",
-        password: "password",
-        database: "edify"
+      connectionLimit : 100,
+
+      host     : '',
+
+      port     :  3306,
+
+      user: "",
+
+      password: "",
+
+      database: ""
 
   });
 
+  return con
 
-    return con
- 
- }
-
+}
 
 
 /**
@@ -262,51 +267,6 @@ function retrievelicenses(user_id) {
                 } else {
 
                     for(i = 0; i < result.length; i++) {
-                        if (result[i].type == 'criminal'){
-
-                            status_data['criminal'] = {  type:result[i].type,
-
-                                                         status:result[i].status,
-
-                                                         license_id:result[i].license_id,
-
-                                                         admin_notes:result[i].admin_notes,
-                                        } 
-
-                        } else if (result[i].type == 'siteplan'){
-
-                            status_data['siteplan'] = {  type:result[i].type,
-                                                         status:result[i].status,
-                                                         license_id:result[i].license_id,
-                                                         admin_notes:result[i].admin_notes,
-                                        } 
-
-                            
-
-                        } else if (result[i].type == 'floorplan') {
-
-                            status_data['floorplan'] = {  type:result[i].type,
-                                                         status:result[i].status,
-                                                         license_id:result[i].license_id,
-                                                         admin_notes:result[i].admin_notes,
-                                        } 
-                        } else if (result[i].type == 'reffile') {
-
-                            status_data['reffile'] = {  type:result[i].type,
-                                                         status:result[i].status,
-                                                         license_id:result[i].license_id,
-                                                         admin_notes:result[i].admin_notes,
-                                        } 
-
-                        } else if (result[i].type == 'firefile'){
-
-                            status_data['firefile'] = {  type:result[i].type,
-                                                         status:result[i].status,
-                                                         license_id:result[i].license_id,
-                                                         admin_notes:result[i].admin_notes,
-                                        } 
-
-                        }
 
                         var license_type = result[i].type
 
@@ -317,7 +277,6 @@ function retrievelicenses(user_id) {
                         }
                     resolve(defaultJSON)
                     resolve(status_data);
-                    // console.log(status_data);
 
                 }
             })
