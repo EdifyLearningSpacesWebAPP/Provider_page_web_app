@@ -57,5 +57,5 @@ button{
     font-size: 20px;
 }
 button:hover {
-    background-color: #916cc6;
+    opacity: 1;
 }

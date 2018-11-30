@@ -1,14 +1,9 @@
 @import 'navbar1.css';
 @import 'navbar2.css';
 
-#licensebody{
-    overflow: scroll;
-}
 
 .bigcontainer {
     width: 65vw;
-    background-color: white;
-    margin-bottom: 20px;
     overflow: hidden;
     border-radius: 6px;
 }
@@ -36,6 +31,7 @@
     font-weight: bold;
     opacity: 0.8;
     padding: 10px;
+    margin: 10px;
 }
 
 .mainbuttons:hover {
