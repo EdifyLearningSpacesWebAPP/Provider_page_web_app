@@ -5,7 +5,7 @@ var crimtxtStateSS = "close",
 var user = 1;
 
 var windows = ["crimCheckSS", "siteCheckSS","floorCheckSS", "referencesSS", "firePlanSS"]
-var statuses = ["criminal", "siteplan", "floorplan", "references", "fireplan"]
+var statuses = ["criminal", "siteplan", "floorplan", "reference", "fireplan"]
 
 /**
 * Function to open and close criminal record check information box
