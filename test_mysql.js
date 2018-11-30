@@ -16,15 +16,15 @@ var con = mysql.createConnection({
 
       connectionLimit : 100,
 
-      host     : '',
+      host     : '54.202.177.36',
 
       port     :  3306,
 
-      user: "",
+      user: "edifyuser",
 
-      password: "",
+      password: "EdifyPassword1!",
 
-      database: ""
+      database: "edify"
 
   });
 
