@@ -19,11 +19,12 @@ const fs = require('fs');
 const session = require('client-sessions');
 const fileUpload = require('express-fileupload');
 const app = express();
-
+ 
 const send_email = require("./components/send_email")
 const verify_signup = require("./components/verify_signup");
 const check = require("./public/credentialErrorChecking");
 const verify_license = require("./components/verify_license");
+const login_check = require("./components/login_check");
 // const uploadS3 = require("./public/uploadS3");
 const downloadS3 = require("./public/downloadS3");
 const db = require('./test_mysql.js')
@@ -340,7 +341,30 @@ app.get('/login', (req, res) => {
 });
 
 app.post('/login', (req, res) => {
-    if(res) {
+
+    login_check.login_check(req.body).then((info) =>{
+        console.log(info)
+        var user = req.body;
+        console.log(info);
+        req.session.user = user;
+        if (info.error == 1) {
+            req.session.user.admin = 'user'
+            res.redirect('/licenses')
+        } else if (info.error == 2) {
+            req.session.user.admin = 'admin'
+            res.redirect('/provider_list')
+        } else if (info.error == 3) {
+            req.session.user.admin = 'owner'
+            res.redirect('/admin_list')
+        }else {
+            res.redirect('/login')
+        }
+    }, (error) =>{
+        console.log(error)
+        res.send(JSON.stringify(error))
+})
+    // code to retrieve users from the db
+    /*if(res) {
         console.log('stuff is happene');
         db.getUser(req.body.Email).then((resolved) => {
             console.log('resolve'+ resolved.password);
@@ -371,7 +395,7 @@ app.post('/login', (req, res) => {
         })
     } else {
         console.log('login is bad ' + err);
-    } 
+    } */
 });
  
 app.get('/tandp', (req, res) => {
@@ -490,8 +514,12 @@ app.get('/deleteaccount', (req, res)=>{
 })
 
 app.get('/provider_list', adminSessionCheck, (req, res, list) => {
+
+    res.render('provider_list.hbs', {
+        userData: testData.provider_list_data
+    })
     //get list of providers from the db
-    db.getUsers('user')
+    /*db.getUsers('user')
     .then((resolved) =>{
         res.render('provider_list.hbs', {
             userData: resolved
@@ -499,13 +527,14 @@ app.get('/provider_list', adminSessionCheck, (req, res, list) => {
     }).catch((error) => {
         console.log(error);
         res.send('error, please try again.')
-    });
+    });*/
 });
 
 app.post('/provider_list', (req, res) => {
     console.log('prolist');
     db.getUsers('users')
     .then((resolved) => {
+        
         var id = req.body.Idsearch
         var fname = req.body.fnamesearch
         var lname = req.body.lnamesearch
@@ -523,8 +552,13 @@ app.post('/provider_list', (req, res) => {
     })
 });
 
+
 app.get('/admin_list', superSessionCheck, (req, res) => {
-    db.getUsers('admin')
+    res.render('admin_list.hbs', {
+        userData: testData.admin_list_data
+})
+    // get admin users from db
+    /*db.getUsers('admin')
     .then((resolved) => {
         res.render('admin_list.hbs', {
             admins: resolved
@@ -532,7 +566,7 @@ app.get('/admin_list', superSessionCheck, (req, res) => {
     }).catch((error) => {
         console.log(error);
         res.send('error');
-    })
+    })*/
 })
 
 app.post('/filter_admin_list', (req, res) => {

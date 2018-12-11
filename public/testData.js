@@ -63,70 +63,30 @@ const provider_list_data = {
 			lastName: 'Sososo',
 			id: 10000,
 			status: 'Awaiting Approval',
-			city: 'New Westminster',
+			location: 'New Westminster',
 		},
 		{
 			firstName: 'mick',
 			lastName: 'Sososo',
 			id: 10000,
 			status: 'Awaiting Approval',
-			city: 'New Westminster',
+			location: 'New Westminster',
 		},
 		{
 			firstName: 'erik',
 			lastName: 'Sososo',
 			id: 30000,
 			status: 'Awaiting Submission',
-			city: 'New Westminster',
+			location: 'New Westminster',
 		},
 		{
 			firstName: 'precidia',
 			lastName: 'Sososo',
 			id: 20000,
 			status: 'Approval Denied',
-			city: 'New Westminster',
+			location: 'New Westminster',
 		},
-		{
-			firstName: 'dummy',
-			lastName: 'dummy',
-			id: 10060,
-			status: 'Approval Denied',
-			city: 'New Westminster',
-		},
-		{
-			firstName: 'dummy',
-			lastName: 'dummy',
-			id: 10050,
-			status: 'Awaiting Approval',
-		},
-		{
-			firstName: 'dummy',
-			lastName: 'dummy',
-			id: 10040,
-			status: 'Approved Granted',
-			city: 'New Westminster',
-		},
-		{
-			firstName: 'dummy',
-			lastName: 'dummy',
-			id: 10030,
-			status: 'Approved Granted',
-			city: 'New Westminster',
-		},
-		{
-			firstName: 'dummy',
-			lastName: 'dummy',
-			id: 10020,
-			status: 'Approval Denied',
-			city: 'New Westminster',
-		},
-		{
-			firstName: 'dummy',
-			lastName: 'dummy',
-			id: 10010,
-			status: 'Approved Granted',
-			city: 'New Westminster',
-		} 
+		
 	]
 }
 
@@ -155,11 +115,28 @@ const admin_list_data = {
 	]
 }
 
-const user_data = {
-	id: 10000,
-	UName: 'Shibe Ngn',
-	UEmail: 'ShibeNgn26@gmail.com',
-}
+const user_data = [
+	{
+		id: 10000,
+		email: 'user',
+		Passwd: 'user',
+		admin: 'user'
+	},
+	{
+		id: 10000,
+		email: 'super',
+		Passwd: 'super',
+		admin:'owner'
+	},
+	{
+		id: 10000,
+		email: 'admin',
+		Passwd: 'admin',
+		admin:'admin'
+	}
+]
+	
+
 
 const admin_edit_data = {
 	id: '1000',

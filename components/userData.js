@@ -1,1 +1,22 @@
-module.exports.users = [{"first_name":"ffds","last_name":"fdsfds","username":"dfs@afj.com","education":"science","password":"Fjqwlieji34l323#","address":"afas","is_admin":0},{"first_name":"adf","last_name":"asda","username":"abc@abc.com","education":"science","password":"Fjqwlieji34l323#","address":"addsa","is_admin":0}]
+
+const user_data = [
+	{
+		id: 10000,
+		email: 'user',
+		Passwd: 'user',
+	},
+	{
+		id: 10000,
+		email: 'super',
+		Passwd: 'super',
+	},
+	{
+		id: 10000,
+		email: 'admin',
+		Passwd: 'admin',
+	}
+]
+module.exports = {
+
+    user_data: user_data
+}
