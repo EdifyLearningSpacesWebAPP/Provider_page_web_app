@@ -1,23 +1,15 @@
 var response = {};
 
-
-
 var fname = document.getElementById("fname");
 var lname = document.getElementById("lname")
 var email = document.getElementById("email");
-var educationbg = document.getElementById("selectbox");
+var educationbg = document.getElementById("background");
 var password = document.getElementById("password");
 var passwordcheck = document.getElementById("passwordcheck");
 var address = document.getElementById("address")
 var speechbubbble = document.getElementById("bubble");
 
-var errmsg = "OH NO!"
 var instructions = document.getElementById("instructions");
-
-
-
-
-
 
 document.getElementById("backbtn").addEventListener("click", function(){
     document.getElementById("tccontainer").style.display = "none";
@@ -36,7 +28,7 @@ document.getElementById("finishsignup").addEventListener("click", function(){
 })
 
 document.getElementById('signup').addEventListener("click",function(){
-    verification();
+    verify_email(verification());
 })
 
 document.addEventListener("click", function(event) {
@@ -48,56 +40,92 @@ document.addEventListener("click", function(event) {
     }
 })
 
-//verifies if everything is filled in returns alerts if not filled
+/**
+ * Alerts the user if any boxes have benn left empty
+ */
 function verification(){
     var pass_msg = check_characters(password.value);
 
     if(fname.value == "" || lname.value==""){
         instructions.innerHTML="Please fill out your name"
         instructions.style.color = "red"
+        return false
     }
     else if(emailValidation(email.value) == false){
         instructions.innerHTML="Please enter a valid Email Address"
         instructions.style.color = "red"
+        return false
     }
     else if(educationbg.value == ""){
         instructions.innerHTML="Please fill out your education"
         instructions.style.color = "red"
+        return false;
     }
     else if(password.value == ""){
         instructions.innerHTML="Please enter a valid password"
         instructions.style.color = "red"
+        return false;
     }
     else if(password_length(password.value) == false){
         instructions.innerHTML="Password is under 8 characters"
         instructions.style.color = "red"
+        return false;
     }
     else if(pass_msg != "0"){
         if(pass_msg == "1"){
             instructions.innerHTML="Password contains no uppercase letters"
             instructions.style.color = "red"
+            return false;
         }
         else if(pass_msg == "2"){
             instructions.innerHTML="Password does not contain any numbers"
             instructions.style.color = "red"
+            return false;
         }
     }
     else if(password.value != passwordcheck.value){
         instructions.innerHTML="Passwords do not match"
         instructions.style.color = "red"
+        return false;
     }
     else if(address.value == ""){
         instructions.innerHTML="Please fill out your address"
         instructions.style.color = "red"
+        return false;
     }
+    
     else{
-        document.getElementById("tccontainer").style.display = "block";
-        document.getElementById("signupcontainer").style.display = "none";
+        return true;
+    }
+
+};
+
+function verify_email(validation_check){
+    if(validation_check == true){
+        var email_check = {};
+        email_check["type"] = "check_email";
+        email_check["email"] = email.value;
+        ajax_function(email_check)
+        .then((data)=>{
+            console.log(data["used_email"])
+            if(data["used_email"] != 0){
+                instructions.innerHTML="This Email address has already been registered"
+                instructions.style.color = "red"
+            }
+            else {
+                document.getElementById("tccontainer").style.display = "block";
+                document.getElementById("signupcontainer").style.display = "none";
+            }
+        })
     }
 
 }
 
-//finds length of password, returns true/false
+/**
+ * finds the length of the password
+ * @param {string} pw - The password the user inputed.
+ * @return {boolean} - If the password is long enough.
+ */
 function password_length(pw){
     if(password.value.length < 8){
         return false;
@@ -107,7 +135,12 @@ function password_length(pw){
     }
 };
 
-//checks if the password has the required characters
+
+/**
+ * checks if the password has the required characters
+ * @param {*} pw - The password the user has inputed
+ * @return {boolean} - If the password is missing any requirements
+ */
 function check_characters(pw){
     var num = false;
     var cap = false;
@@ -132,17 +165,34 @@ function check_characters(pw){
 
 
 
-//prepares data to send to server
+
+/**
+ * prepares data and sends the prepaired data to server to server.
+ */
 function send_prep(){
-    
-    console.log('SOMETHING IS HAPPENING');
     response["fname"] = fname.value;
     response["lname"] = lname.value;
     response["email"] = email.value; 
     response["edubg"] = educationbg.value; 
     response["password"] = password.value; 
     response["address"] = address.value; 
-    ajax_function(response);
+    ajax_function(response)
+    .then((returned)=>{
+        // console.log(data)
+        if(returned.Error == "0"){
+            swal({
+                type: 'success',
+                title: 'Your account has been created',
+                text: 'You will be redirected to the home page',
+                confirmButtonText: 'Ok'
+            }).then((result)=>{
+                location.href="/landing_page"
+            })
+        }
+        else{
+            swal("Whoops, Something went wrong", "Please reload your page", "error")
+        }
+    })
 }
 //verifies email
 function emailValidation(emails) {
@@ -153,21 +203,20 @@ function emailValidation(emails) {
     }
 }
 
-//sends data to server
+/**
+ * Sends prepaired data to server then redirects user back to landing page.
+ * @param {*} json_obj - The data that gets send to the node server.
+ */
 function ajax_function(json_obj){
+    return new Promise((resolve)=>{
     $.ajax({
         type: 'POST',
         data: JSON.stringify(json_obj),
         contentType: 'application/json',
-        url: 'http://localhost:8080/account_creation',
+        url: '/account_creation',
         success: function(data){
-            // console.log(data)
-            if(data.Error == "0"){
-                location.href="/licenses"
-            }
-            else{
-                swal("Whoops, Something went wrong", "Please reload your page", "error")
-            }
+            resolve(data)
         }
     })
+})
 }

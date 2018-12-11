@@ -1,39 +1,33 @@
 @import 'navbar1.css';
 @import 'navbar2.css';
 
-#licensebody{
-    overflow: scroll;
-}
 
-.buttbox {
-    width: 200px; 
-    height: 500px;
-    display: inline;
-    font-family: 'BalooBhai', sans-serif;
-}
 
-.bigcontainer {
+.whitebox {
     width: 65vw;
-    background-color: white;
-    margin-bottom: 20px;
     overflow: hidden;
-    border-radius: 6px;
+    border-radius: 0 0 6px 6px;
+    display: inline-block;
+    background-color: white;
+    margin: 10px;
+    margin-top: 0px;
+    margin-bottom: 15px;
+    position: relative;
+
 }
 
 #mainarea{
     margin: auto;
-    padding: 5px;
     position: absolute;
     height: 80vh;
-    width: 65vw;
+    width: 67vw;
     right: 0px;
     left: 0px;
-    top: 200px;
+    top: 220px;
     bottom:0px;
 }
 
 .mainbuttons {
-    border-radius: 6px;
     border:0px;
     width: 65vw;
     background-color: #5f59a5;
@@ -43,35 +37,55 @@
     font-weight: bold;
     opacity: 0.8;
     padding: 10px;
+    margin: 10px;
+    margin-bottom: -5px;
+    margin-top: 0px;
+    font-weight: normal;
 }
 
 .mainbuttons:hover {
   opacity: 1;
 }
 
+
 .textarea {
-    width:38vw;
     height: auto;
     background-color: rgba(254, 250, 255, 0.9);
     float: left;
     text-align: left;
     margin: 8px;
-    padding:5px;
+    padding:10px;
+    padding-top: 0px;
+    padding-left: 20px;
     position: relative;
     border-radius: 5px;
     font-size: 20px;
+    font-family: 'Verdana';
+    color: #48456b;
+    width: 58%;
 }
 
+
 .submitarea {
-    width:20vw;
-    height:150px;
+    height:200px;
     float: right;
     text-align: center;
     margin: 8px;
+    margin-right: 10px;
     padding: 10px;
+    padding-top: 5px;
     background-color: rgba(254, 205, 254, 0.5);
     position: relative;
     border-radius: 6px;
+    width: 30%;
+}
+
+#vaclist {
+    list-style-type:square;
+    margin: 0;
+    padding: 0;
+    list-style-position: inside;
+    text-align: left;
 }
 
 #crInfo {
@@ -95,10 +109,10 @@
 }
 
 #refInfo {
-    display: none; 
+    display: none;
 }
 #refInfo2 {
-    display: none; 
+    display: none;
 }
 
 #fireInfo {
@@ -110,17 +124,34 @@
 
 #immunInfo {
     display: none;
-    text-align: center;
-    width: 100%;
+}
+
+#immunInfo2 {
+    display: none;
 }
 
 #empInfo {
     display: none;
     text-align: center;
-    width: 100%;
+    font-family: 'Verdana';
+    margin: 20px;
+    color: #48456b;
+    font-size: 20px;
+
 }
+
 
 .purple_button {
   padding: 15px 35px;
   margin: 0px 20px;
+  background-color: #5f59a5;
+  border-radius: 6px;
+  border: 0px;
+  color: white;
+  font-family: 'BalooBhai', sans-serif;
+  font-size: 18px;
+}
+
+.purple_button:hover {
+  background-color: #916cc6;
 }

@@ -13,27 +13,23 @@
 	position: relative;
 	width: 130px;
 	height: 30px;
+	padding-right: 20px;
 }
 
 .cont {
 	display: inline-block;
 	position: relative;
-	width: 130px;
+	width: 150px;
 	line-height: 35px;
 	height: 30px;
 	text-decoration: none;
-    font-size: 25px;
+    font-size: 28px;
     text-align: center;
     color: #48456b;
-    font-weight: bold;
     font-family: 'BalooBhai', sans-serif;
 }
 
 .cont:hover {
-	display: inline-block;
-	position: relative;
-	width: 130px;
-	height: 30px;
 	
     color: white;
     

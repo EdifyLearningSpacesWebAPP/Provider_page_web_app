@@ -1,6 +1,9 @@
 var response = {};
 var license_ID = 11111;
+var license_name = '';
 var notesValue = '';
+var pictureName = '';
+
 /**
 * Function to create new HTML element
 * @param {string} element - The type of element to create
@@ -36,9 +39,14 @@ function CreateNewInput(type, value) {
 * @param {string} id - the identifier for the HTML element
 * @param {string} name - the specific name of the HTML element
 */
-function createOptions(id, name) {
+function createOptions(id, name, l_id, file) {
 	console.log(id);
-	license_ID = id;
+	license_name = id;
+	license_ID = l_id
+	pictureName = file;
+
+		
+	
 	var license = document.getElementById(id);
 	var licenseOptions = document.getElementById(license.id + '_options');
 	if (licenseOptions) {
@@ -56,21 +64,21 @@ function createOptions(id, name) {
 		// fixed element id
 		// document.getElementById('element3').addEventListener("click", send_conf);
 
-		filename_name = createNewElement('div', 'filename_name', 'Filename...');
+		filename_name = createNewElement('div', 'filename_name', pictureName);
 		filename_date = createNewElement('div', 'filename_date', '00/00/0000');
 
 		file_submit = createNewElement('div', 'file_submit');
-		
+		// file_submit.method = 'post';
+		// file_submit.action = '/provider_edit';
 
 		form_left = createNewElement('div', 'form_left');
 		form_right = createNewElement('div', 'form_right');
 		form_left_padding = createNewElement('div', 'form_left_padding', 'Add a note');
 
 		note_input = createNewElement('textarea', 'note_input');
+		note_input.name = 'admin_note';
 		note_input.rows = '3';
 		note_input.id = id + '_NInput';
-		// why do I keep getting NULL error for notes??????????
-		// notesValue = document.getElementById(id +'_NInput').value;
 		console.log(id + '_NInput');
 
 		license.appendChild(license_options);
@@ -83,14 +91,17 @@ function createOptions(id, name) {
 				file_submit.appendChild(form_left);
 					form_left.appendChild(form_left_padding);
 					form_left.appendChild(note_input);
+
+
 				file_submit.appendChild(form_right);
 
-
+		document.getElementById(id +'_DLbut').addEventListener("click", send_file);
 		if (name == 'Awaiting approval') {
 			
 			accept_but = CreateNewInput('submit', 'Approve');
 			accept_but.id = id +'_Abut'
 			form_right.appendChild(accept_but);
+
 			document.getElementById(id +'_Abut').addEventListener("click", send_prep_A);
 			
 			deny_but = CreateNewInput('submit', 'Deny');
@@ -106,7 +117,7 @@ function createOptions(id, name) {
 			unapprove_but = CreateNewInput('submit', 'Un-Approve');
 			unapprove_but.id = id +'_UAbut'
 			form_right.appendChild(unapprove_but)
-			console.log('APPROVED IS: ' + id +'_UAbut')
+
 			document.getElementById(id +'_UAbut').addEventListener("click", send_prep_UA);
 		} else if (name == 'Denied') {
 			
@@ -116,7 +127,8 @@ function createOptions(id, name) {
 			undeny_but = CreateNewInput('submit', 'Un-Deny');
 			undeny_but.id = id +'_UDbut'
 			form_right.appendChild(undeny_but) 
-			console.log('DENIED IS: ' + id +'_UDbut')
+
+			notesValue = document.getElementById(id +'_NInput').value;
 			document.getElementById(id +'_UDbut').addEventListener("click", send_prep_UD);
 		};
 	}
@@ -128,35 +140,48 @@ function createOptions(id, name) {
 //--------------my sql-----------------
 //-------------------------------------
 
+
+function send_file() {
+	console.log('send '+ pictureName);
+	response["filename"] = pictureName;
+	response["L_ID"] = license_ID;
+	
+	ajax_function(response)
+}
+
 function send_prep_D(){
-	alert("1")
+	notesValue = document.getElementById(license_name +'_NInput').value;
+	alert("sent")
 	response["Action"] = 'Denied';
 	response["L_ID"] = license_ID;
-	response["noteValue"] = notesValue;
+	response["notesValue"] = notesValue;
+	console.log('note:' + notesValue);
     ajax_function(response);
 }
 
 function send_prep_A(){
-	alert("2")
+	notesValue = document.getElementById(license_name +'_NInput').value;
+	alert("sent")
 	response["Action"] = 'Accepted';
 	response["L_ID"] = license_ID;
-	response["noteValue"] = notesValue;
+	response["notesValue"] = notesValue;
+	console.log('note:' + notesValue);
 	ajax_function(response);
 }
 
 function send_prep_UA(){
-	alert("3")
+	alert("sent")
 	response["Action"] = 'Awaiting Approval';
 	response["L_ID"] = license_ID;
-	response["noteValue"] = notesValue;
+	response["notesValue"] = notesValue;
 	ajax_function(response);
 }
 
 function send_prep_UD(){
-	alert("4")
+	alert("sent")
 	response["Action"] = 'Awaiting Approval';
 	response["L_ID"] = license_ID;
-	response["noteValue"] = notesValue;
+	response["notesValue"] = notesValue;
 	ajax_function(response);
 }
 
@@ -168,19 +193,21 @@ function send_prep_UD(){
 
 function ajax_function(json_obj){
     $.ajax({
+    	dataType: "jsonp",
+    	crossOrigin: true,
         type: 'POST',
         data: JSON.stringify(json_obj),
         contentType: 'application/json',
-        url: 'http://localhost:8080/provider_edit',
+        url: '/provider_edit',
         success: function(data){
-            
-            if(data.Error == "0"){
+            console.log(data);
+            if(data == "ok"){
                 console.log('its good');
             }else{
 
             
                 // swal("Whoops, Something went wrong", "Please reload your page", "error")
-                console.log('swal will pop up');
+                console.log(data);
             }
         }
     })

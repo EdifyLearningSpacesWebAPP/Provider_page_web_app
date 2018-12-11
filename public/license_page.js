@@ -15,13 +15,14 @@ var floorfile = document.getElementById("floorfile")
 var sitefile = document.getElementById("sitefile")
 var reffile = document.getElementById("reffile")
 var firefile = document.getElementById("firefile")
+var immfile = document.getElementById("immfile")
 
 
 var crimnotes = document.getElementById("crimnotes");
 var floornotes = document.getElementById("floornotes")
 var sitenotes = document.getElementById("sitenotes")
 var refnotes = document.getElementById("refnotes")
-var firenotes = document.getElementById("firenotes")
+var immnotes = document.getElementById("immnotes")
 
 /**
 * Function to open and close criminal record check information box
@@ -122,13 +123,16 @@ function refOC() {
 * Function to open and close immunication information box
 */
 function immunOC() {
-    var text = document.getElementById("immunInfo");
+    var text = document.getElementById("immunInfo"),
+        submit = document.getElementById("immunInfo2");
     document.getElementById("immunStat").addEventListener("click", () =>{
     if (immtxtState == "close"){
         text.style.display = "block";
+        submit.style.display = "block";
         immtxtState = "open";
     } else if (reftxtState = "open"){
        text.style.display = "none";
+       submit.style.display = "none";
        immtxtState = "close";
     }
 });
@@ -150,8 +154,41 @@ function empOC() {
 });
 }
 
+
+
+function ajax_function(json_obj){
+    $.ajax({
+        type: 'POST',
+        data: JSON.stringify(json_obj),
+        contentType: 'multipart/form-data;boundary=abc',
+        url: '/licenses',
+        success: function(data){
+            console.log(data)
+            if(data){
+                swal({
+
+                    type: 'success',
+
+                    title: 'Your file has been filed',
+
+                    confirmButtonText: 'OK'
+
+                    }).then((result) => {
+
+                        
+
+                })
+            }
+            else{
+
+                alert("Whoops, something went wrong")
+            }
+        }
+    })
+}
+
 function send_prep(filetype){
-    console.log('SOMETHING IS HAPPENING');
+    
     if (filetype == 'crimfile') {
         response["type"] = 'criminal';
         response["file"] = crimfile.value;
@@ -179,25 +216,6 @@ function send_prep(filetype){
     
     
     ajax_function(response);
-}
-
-function ajax_function(json_obj){
-    $.ajax({
-        type: 'POST',
-        data: JSON.stringify(json_obj),
-        contentType: 'application/json',
-        url: 'http://localhost:8080/licenses',
-        success: function(data){
-            console.log(data)
-            if(data.Error == "0"){
-                location.href="/licenses"
-            }
-            else{
-
-                alert("Whoops, something went wrong")
-            }
-        }
-    })
 }
 
 
