@@ -1,11 +1,14 @@
 var crimtxtStateSS = "close",
     sitetxtStateSS = "close",
     floortxtStateSS = "close";
+    reftxtStateSS = "close";
+    firetxtStateSS = "close";
+    immtxtStateSS = "close";
 
 var user = 1;
 
-var windows = ["crimCheckSS", "siteCheckSS","floorCheckSS", "referencesSS", "firePlanSS"]
-var statuses = ["criminal", "siteplan", "floorplan", "references", "fireplan"]
+var windows = ["crimCheckSS", "siteCheckSS","floorCheckSS", "referencesSS", "firePlanSS", "immunStatSS"]
+var statuses = ["criminal", "siteplan", "floorplan", "reference", "fireplan", "imm"]
 
 /**
 * Function to open and close criminal record check information box
@@ -56,12 +59,12 @@ function floorOCSS() {
 
 function refOCSS() {
     document.getElementById("referencesSS").addEventListener("click", () =>{
-    if (floortxtStateSS == "close"){
+    if (reftxtStateSS == "close"){
         document.getElementById("refInfoSS").style.display = "block";
-        floortxtStateSS = "open";
+        reftxtStateSS = "open";
     } else if (floortxtStateSS = "open"){
        document.getElementById("refInfoSS").style.display = "none";
-       floortxtStateSS = "close";
+       reftxtStateSS = "close";
     }
 });
 }
@@ -69,15 +72,29 @@ function refOCSS() {
 
 function fireOCSS() {
     document.getElementById("firePlanSS").addEventListener("click", () =>{
-    if (floortxtStateSS == "close"){
+    if (firetxtStateSS == "close"){
         document.getElementById("fireInfoSS").style.display = "block";
-        floortxtStateSS = "open";
+        firetxtStateSS = "open";
     } else if (floortxtStateSS = "open"){
        document.getElementById("fireInfoSS").style.display = "none";
-       floortxtStateSS = "close";
+       firetxtStateSS = "close";
     }
 });
 }
+
+
+function immunStatOCSS() {
+    document.getElementById("immunStatSS").addEventListener("click", () =>{
+    if (immtxtStateSS == "close"){
+        document.getElementById("immunInfoSS").style.display = "block";
+        immtxtStateSS = "open";
+    } else if (immtxtStateSS = "open"){
+       document.getElementById("immunInfoSS").style.display = "none";
+       immtxtStateSS = "close";
+    }
+});
+}
+
 
 
 
@@ -119,6 +136,7 @@ siteOCSS();
 floorOCSS();
 fireOCSS();
 refOCSS();
+immunStatOCSS();
 
 
 document.addEventListener("DOMContentLoaded", function(){

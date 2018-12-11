@@ -1,6 +1,11 @@
 var mysql = require('mysql');
-var crypto = require('crypto');
+var nodemailer = require('nodemailer');
+// var passport = require('passport');
+// var LocalStrategy = require('passport-local').Strategy;
+
 var bcrypt2 = require('bcrypt');
+var async = require('async');
+var crypto = require('crypto');
 
 const port = process.env.port || 8080;
 const express = require('express');
@@ -19,7 +24,7 @@ const send_email = require("./components/send_email")
 const verify_signup = require("./components/verify_signup");
 const check = require("./public/credentialErrorChecking");
 const verify_license = require("./components/verify_license");
-const uploadS3 = require("./public/uploadS3");
+// const uploadS3 = require("./public/uploadS3");
 const downloadS3 = require("./public/downloadS3");
 const db = require('./test_mysql.js')
 
@@ -106,8 +111,9 @@ function filterList(list, id, fname, lname, status) {
 app.get('/status', userSessionCheck, (request, response) => {
     db.retrievelicenses(request.session.user.id)
     .then((resolved) => {
+
         console.log(resolved);
-        response.render('status.hbs', {
+         response.render('status.hbs', {
             fireplanStatus: resolved['fireplan'].status,
             fireplanNotes: resolved['fireplan'].admin_notes,
             criminalStatus: resolved['criminal'].status,
@@ -118,12 +124,18 @@ app.get('/status', userSessionCheck, (request, response) => {
             refNotes: resolved['reference'].admin_notes,
             floorplanStatus: resolved['floorplan'].status,
             floorplanNotes: resolved['floorplan'].admin_notes,
+            immnStatus: resolved['imm'].status,
+            immNotes: resolved['imm'].admin_notes,
+
         })
+
     }).catch((error) => {
         console.log(error);
         response.send('error')
     });
+
 });
+
 
 app.post('/status', (req, res) => {
     db.retrievelicenses(req.session.user.id)
@@ -232,6 +244,8 @@ app.post('/provider_edit', adminSessionCheck, (request, response) => {
     
 
 });
+
+
 
 app.get('/settings', userSessionCheck, (req, res) => {
     res.render('settings.hbs', {

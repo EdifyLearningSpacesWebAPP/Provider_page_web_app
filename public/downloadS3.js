@@ -1,5 +1,5 @@
 const AWS = require('aws-sdk');
-const cred = require("./s3credentials")
+// const cred = require("./s3credentials")
 
 function downloadS3(file) {
     return new Promise((resolve, reject) =>{
