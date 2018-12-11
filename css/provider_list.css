@@ -33,18 +33,23 @@ input[type=text] {
 }
     #title {
         position: relative;
-        top: 20px;
+        top: 10px;
         font-size: 40px;
         text-align: center;
         color: rgb(87, 164, 219);
     }
     #header {
-        height: 20%;
+        height: 30%;
         width: 100%;
         border-bottom: solid gray 2px;
     }
         .row{
-            height: 33%;
+            height: 30%;
+            width: 100%;
+        }
+
+        .rowhead{
+            height: 35%;
             width: 100%;
         }
             .filters, .id, .fname, .lname, .status, .city {
@@ -60,10 +65,10 @@ input[type=text] {
                 font-size: 24px;
             }
             .id {width: 15%;}
-            .fname {width: 15%;}
-            .lname {width: 15%;}
-            .status {width: 25%;}
-            .city {width: 20%;}
+            .fname {width: 18%;}
+            .lname {width: 18%;}
+            .status {width: 20%;}
+            .city {width: 15%;}
                 #optionbox {
                     width:20vw;
                     float: right;
