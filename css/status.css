@@ -4,7 +4,7 @@
 	padding: 5px;
 	position: absolute;
 	height: 80vh;
-	width: 65vw;
+	width: 67vw;
 	right: 0px;
 	left: 0px;
 	top: 200px;
@@ -14,6 +14,12 @@
 #maincontent h2 {
     color: white;
     font-weight: bold;
+}
+
+.bigcontainer {
+    width: 67vw;
+    overflow: hidden;
+    border-radius: 6px;
 }
 
 .redbuttons {
@@ -29,6 +35,7 @@
     font-weight: bold;
     float: left;
     opacity: 0.9;
+    font-weight: normal;
 }
 
 .redbuttons:hover {
@@ -48,6 +55,7 @@
     font-weight: bold;
     float: left;
     opacity: 0.9;
+    font-weight: normal;
 }
 
 .greenbuttons:hover {
@@ -65,8 +73,8 @@
     text-align: center;
     font-size: 30px;
     font-weight: bold;
-    float: left;
     opacity: 0.9;
+    font-weight: normal;
 }
 
 .yellowbuttons:hover {
@@ -86,6 +94,7 @@
     font-weight: bold;
     float: left;
     opacity: 0.9;
+    font-weight: normal;
 }
 
 .notesbox {
@@ -97,6 +106,7 @@
 	left: 0px;
 	right: 0px;
 	margin: auto;
+  font-weight: normal;
 }
 
 .notescontent {
@@ -105,6 +115,8 @@
 	height: 97%;
 	left: 10px;
   font-size: 20px;
+  font-family: 'Verdana';
+  padding: 10px;
 }
 
 .textareaSS {
@@ -112,17 +124,20 @@
     margin: 0px;
     position: relative;
     height: 100%;
+    font-weight: normal;
 }
 
 .hiddenspaceSS {
 	top: -20px;
-  width: 64vw;
+  width: 65vw;
   height: auto;
   background-color: #fff;
   float: left;
-  padding: 20px;
+  padding-bottom: 20px;
+  padding-top: 10px;
   margin: 10px;
   position: relative;
+  font-weight: normal;
 
 }
 
@@ -144,5 +159,9 @@
 }
 
 #fireInfoSS {
+  display: none;
+}
+
+#immunInfoSS {
   display: none;
 }

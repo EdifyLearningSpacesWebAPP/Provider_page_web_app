@@ -4,7 +4,12 @@ var mysql = require('mysql');
 const send_email = require("./components/send_email")
 const createConnection = require("./createConnection")
 
-var con = createConnection.createConnection;
+/**
+ * Creates a connection to the database.
+ * @returns {array} con - connection details
+ */
+
+// var con = createConnection.createConnection();
 
 
 /**
@@ -356,13 +361,14 @@ function getLicense(license_id) {
  */
 function retrievelicenses(user_id) {
     var defaultJSON = {
-        criminal: {status: 'submission is required', admin_notes: 'No note.', name: 'criminal'},
-        siteplan: {status: 'submission is required', admin_notes: 'No note.', name: 'siteplan'},
-        floorplan: {status: 'submission is required', admin_notes: 'No note.', name: 'floorplan'},
-        reference: {status: 'submission is required', admin_notes: 'No note.', name: 'reference'},
-        fireplan: {status: 'submission is required', admin_notes: 'No note.', name: 'fireplan'},
+        criminal: {status: 'submission is required', admin_notes: 'No note.', name: 'criminal', filename: 'no file'},
+        siteplan: {status: 'submission is required', admin_notes: 'No note.', name: 'siteplan', filename: 'no file'},
+        floorplan: {status: 'submission is required', admin_notes: 'No note.', name: 'floorplan', filename: 'no file'},
+        reference: {status: 'submission is required', admin_notes: 'No note.', name: 'reference', filename: 'no file'},
+        fireplan: {status: 'submission is required', admin_notes: 'No note.', name: 'fireplan', filename: 'no file'},
+        imm: {status: 'submission is required', admin_notes: 'No note.', name: 'imm', filename: 'no file'},
     }
-    status_data = {}
+    // status_data = {}
 
     return new Promise((resolve, reject) =>{
 
@@ -378,12 +384,16 @@ function retrievelicenses(user_id) {
                     for(i = 0; i < result.length; i++) {
 
                         var license_type = result[i].type
+                        // console.log(result[i]);
+                        console.log(license_type);
+                        console.log(defaultJSON[license_type]);
                         defaultJSON[license_type].status = result[i].status
                         defaultJSON[license_type].admin_notes = result[i].admin_notes
                         defaultJSON[license_type].license_id = result[i].license_id
+                        defaultJSON[license_type].filename = result[i].file
                     }
                     resolve(defaultJSON)
-
+                    
                     // resolve(status_data);
                 }
             })
@@ -444,25 +454,13 @@ function changeStatus(id, status, notes) {
     })
 }
 
-//needa make it look like retrievelicense
-function getFile() {
-    con.connect(function(err) {
-        if (err) throw err;
 
-        console.log(con.query("SELECT file FROM license WHERE license_id = 12345;", function (err, result) {
-            if (err) throw err;
-        }))
-    });
-}
-
-// should put array of id?
 function loadStatus(id) {
      return new Promise((resolve, reject) =>{
         var con = createConnection.createConnection();
         connect(con)
         .then((resolved) => {
             con.connect(err => {
-                //need a for loop
 
                 con.query("SELECT type, status, admin_notes FROM license WHERE license_id ="+id +";", function (err, result) {
 
@@ -480,6 +478,31 @@ function loadStatus(id) {
     })
 }
 
+function getLicensePic(license_id) {
+        return new Promise((resolve, reject) =>{
+
+        var con = createConnection.createConnection();
+
+        connect(con)
+        .then((resolved) => {
+            con.query("SELECT * FROM license WHERE license_id = " + license_id + ";", function (err, result) {
+                // console.log(result)
+                if (err) {
+                    reject(err);
+                } else {
+                    
+                    resolve(result[0].file)
+
+                    // resolve(status_data);
+                }
+            })
+        }).catch((error) => {
+            reject(error);
+        });
+    });
+    con.end();
+}
+
 module.exports = {
     getUser,
     getUsers,
@@ -488,7 +511,6 @@ module.exports = {
     changePassword,
     changeStatus,
     loadStatus,
-    //getFile
     retrievelicenses,
     getLicense,
     addLicense,
@@ -496,4 +518,5 @@ module.exports = {
     addUser,
     addAdmin,
     check_email,
+    getLicensePic
 }

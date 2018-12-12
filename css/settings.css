@@ -45,8 +45,8 @@
     font-size: 23px;
     color: #48456b;
     font-family: Baloobhai,sans-serif;
-    font-weight: 800;
     line-height: 120%;
+    font-weight: normal;
 
 }
 
@@ -64,12 +64,14 @@
     color: white;
     text-align: center;
     font-size: 30px;
-    font-weight: bold;
+    font-weight: normal;
 }
 
 .changebox:hover {
     background-color: #5f59a5;
 }
+
+
 
 
 .changeInput {
