@@ -73,7 +73,7 @@ var testData = require('./public/testData')
 // Checks to see if the session is still active, if it isnt it redirects to '/landing_page'
 function userSessionCheck(req, res, next) {
     console.log(req.session.user);
-    if (req.session.user.admin === 0) {
+    if (req.session.user.admin === 'user') {
         next()
     } else {
         res.redirect('/landing_page')
@@ -81,7 +81,7 @@ function userSessionCheck(req, res, next) {
 }
 
 function adminSessionCheck(req, res, next) {
-    if (req.session.user.admin === 1) {
+    if (req.session.user.admin === 'admin') {
         next()
     } else {
         res.redirect('/landing_page')
@@ -89,7 +89,7 @@ function adminSessionCheck(req, res, next) {
 }
 
 function superSessionCheck(req, res, next) {
-    if (req.session.user.admin === 2) {
+    if (req.session.user.admin === 'owner') {
         next()
     } else {
         res.redirect('/landing_page')
@@ -116,7 +116,7 @@ function filterList(list, id, fname, lname, status) {
 }
 
 app.get('/status', userSessionCheck, (request, response) => {
-    db.retrievelicenses(req.session.user.id)
+    db.retrievelicenses(request.session.user.id)
     .then((resolved) => {
 
         console.log(resolved);
@@ -155,14 +155,75 @@ app.post('/status', (req, res) => {
     });
 });
 
-
 app.get('/provider_edit', adminSessionCheck, (request, response) => {
+
     response.render('provider_edit.hbs', {
+        id: testData.provider_edit_data.id,
+        fname: testData.provider_edit_data.fname,
+        lname: testData.provider_edit_data.lname,
+        status: testData.provider_edit_data.status,
         userData: testData.provider_edit_data
     })
+
+    //below is for when the database is online
+
+    // var id = request.query.user_id
+    // db.retrievelicenses(id)
+    // .then((resolved) => {
+    //     // required json structure for provider edits hbs
+    //     var sortedProviderLicenses = {
+    //         licenses: {
+    //             awaitingApproval: {
+    //                 name: 'Awaiting approval',
+    //                 licenses: []
+    //             },
+    //             approved: {
+    //                 name: 'Approved',
+    //                 licenses: []
+    //             },
+    //             denied: {
+    //                 name: 'Denied',
+    //                 licenses: []
+    //             },
+    //             awaitingSubmission: {
+    //                 name: 'Awaiting submission',
+    //                 licenses: []
+    //             },
+    //         }
+    //     }
+    //     // pushes the licenses into one of the license lists based on the status
+    //     for (key in resolved) {
+    //         if (resolved.hasOwnProperty(key)) {
+    //             if(resolved[key].status === 'Awaiting Approval') {
+    //                 sortedProviderLicenses.licenses.awaitingApproval.licenses.push(resolved[key]);
+    //             } else if (resolved[key].status === 'Accepted') {
+    //                 sortedProviderLicenses.licenses.approved.licenses.push(resolved[key]);
+    //             } else if (resolved[key].status === 'Denied') {
+    //                 sortedProviderLicenses.licenses.denied.licenses.push(resolved[key]);
+    //             } else if (resolved[key].status === 'submission is required') {
+    //                 sortedProviderLicenses.licenses.awaitingSubmission.licenses.push(resolved[key]);
+    //             }
+    //         }
+    //     }
+
+    //     // console.log(sortedProviderLicenses);
+    //     // console.log(sortedProviderLicenses.licenses.awaitingApproval);
+    //     response.render('provider_edit.hbs', {
+    //         id: id,
+    //         fname: request.query.fname,
+    //         lname: request.query.lname,
+    //         status: request.query.status,
+    //         userData: sortedProviderLicenses
+    //     })
+    // }).catch((error) => {
+    //     console.log(error);
+    //     response.send('error');
+    // })
 });
 
 app.post('/provider_edit', adminSessionCheck, (request, response) => {
+
+    // Below is code for when the database is up
     // res.send(JSON.stringify(req.body))
     console.log(request.body);
     // console.log(request.body.Action);
@@ -192,14 +253,16 @@ app.get('/settings', userSessionCheck, (req, res) => {
 });
 
 app.post('/settings_name', (req, res) => {
-    // send user id aswell instead of hardcode it.
     var fname = req.body.fname
     var lname = req.body.lname
     var name = [fname, lname]
+    var id = req.session.user.id
 
     if (check.checkForBlankEntry(name) && check.checkForOnlyAlphabet(name)) {
         db.changeName(fname, lname)
         .then((resolved) => {
+            req.session.user.fname = fname;
+            req.session.user.lname = lname;
             res.send(resolved)
         }).catch ((error) => {
             res.sendStatus(500)
@@ -210,31 +273,38 @@ app.post('/settings_name', (req, res) => {
 });
 
 app.post('/settings_email', (req, res) => {
-    // send user id as well instead of hardcode it
     var newEmail = req.body.email
+    var id = req.session.user.id
+
     if (check.checkForBlankEntry([newEmail]) && check.checkForEmailFormat(newEmail)) {
-        db.changeEmail(newEmail)
+        db.changeEmail(newEmail, id)
         .then((resolved) => {
-            send(resolved)
+            req.session.user.email = newEmail;
+            res.send(resolved);
         }).catch ((error) => {
-            res.sendStatus(500)
-            log(error);
+            res.sendStatus(500);
+            console.log(error);
         })
     }
 });
 
 app.post('/settings_password', (req, res) => {
-    // send user id as well instead of hardcode it
     var newPassword = req.body.password
-    if (check.checkForBlankEntry([newPassword]) && check.checkForPasswordFormat(newPassword)) {
-        db.changePassword(newPassword)
-        .then((resolved) => {
-            res.send(resolved)
-        }).catch ((error) => {
-            res.sendStatus(500)
-            console.log(error);
-        })
-    }
+    var id = req.session.user.id
+    bcrypt2.genSalt(10, function(err, salt) {
+        if (err) return next(err);
+        bcrypt2.hash(newPassword, salt, null, function(err, hash) {
+            if (err) return next(err);
+            req.body.password = hash; 
+            db.changePassword(newPassword, id)
+            .then((resolved) => {
+                res.send(resolved);
+            }).catch ((error) => {
+                res.sendStatus(500);
+                console.log(error);
+            })
+        });
+    });    
 });
 
 
@@ -364,7 +434,7 @@ app.post('/licenses', (req, res) => {
                     }
                     
                 });
-            db.addLicense(filename, req.body.type, req.body.notes, 1)
+            db.addLicense(filename, req.body.type, req.body.notes, req.session.user.id)
                 .then((resolved) => {
                     res.send('File uploaded!');
                 }, (error) => {
@@ -479,32 +549,54 @@ app.post('/provider_list', (req, res) => {
 
 
 app.get('/admin_list', superSessionCheck, (req, res) => {
+
     res.render('admin_list.hbs', {
-        userData: testData.admin_list_data
+            admins: testData.admin_list_data
+        })
+
+    // db.getUsers('admin')
+    // .then((resolved) => {
+    //     res.render('admin_list.hbs', {
+    //         admins: resolved
+    //     })
+    // }).catch((error) => {
+    //     console.log(error);
+    //     res.send('error');
+    // })
 })
-    // get admin users from db
-    /*db.getUsers('admin')
+
+app.post('/filter_admin_list', (req, res) => {
+    var id = req.body.Idsearch
+    var fname = req.body.fnamesearch
+    var lname = req.body.lnamesearch
+
+    db.getUsers('admin')
     .then((resolved) => {
+        var list = resolved;
+
+        var filteredList = {admins: filterList(list, id, fname, lname)}
         res.render('admin_list.hbs', {
-            admins: resolved
+            admins: filteredList.admins
         })
     }).catch((error) => {
         console.log(error);
         res.send('error');
-    })*/
-})
-
-app.post('/admin_list', (req, res) => {
-    var id = req.body.Idsearch
-    var fname = req.body.fnamesearch
-    var lname = req.body.lnamesearch
-    var status = req.body.querytype
-    var list = testData.admin_list_data.admins;
-
-    var filteredList = {admins: filterList(list, id, fname, lname, status)}
-    res.render('admin_list.hbs', {
-        userData: filteredList
     })
+});
+
+app.post('/create_admin', (req, res) => {
+    console.log(req.body);
+    var fname = req.body.fname
+    var lname = req.body.lname
+    var password = req.body.password
+    var email = req.body.email
+    //error check again
+    db.addAdmin(fname, lname, password, email)
+    .then((resolved) => {
+        res.send(resolved)
+    }).catch((error) => {
+        res.sendStatus(500)
+    });
 });
 
 app.get('/admin_edit', superSessionCheck, (req, res) => {

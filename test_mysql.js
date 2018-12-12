@@ -9,7 +9,7 @@ const createConnection = require("./createConnection")
  * @returns {array} con - connection details
  */
 
-var con = createConnection.createConnection();
+// var con = createConnection.createConnection();
 
 
 /**

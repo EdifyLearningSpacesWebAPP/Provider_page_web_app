@@ -1,7 +1,7 @@
  // test data for provider_page.hbs
 const provider_edit_data = {
-	firstName: 'nick',
-	lastName: 'Sososo',
+	fname: 'nick',
+	lname: 'Sososo',
 	id: 10000,
 	status: 'Awaiting Approval',
 	licenses: {
@@ -56,64 +56,61 @@ const notes = {
 	content: "This is the content. This is also the content. This is the content of the notes. Notes notes notes notes notes.  This is still the content of the notes. Trust me."
 }
 
-const provider_list_data = {
-	providers: [ 
-		{
-			firstName: 'nick',
-			lastName: 'Sososo',
-			id: 10000,
-			status: 'Awaiting Approval',
-			location: 'New Westminster',
-		},
-		{
-			firstName: 'mick',
-			lastName: 'Sososo',
-			id: 10000,
-			status: 'Awaiting Approval',
-			location: 'New Westminster',
-		},
-		{
-			firstName: 'erik',
-			lastName: 'Sososo',
-			id: 30000,
-			status: 'Awaiting Submission',
-			location: 'New Westminster',
-		},
-		{
-			firstName: 'precidia',
-			lastName: 'Sososo',
-			id: 20000,
-			status: 'Approval Denied',
-			location: 'New Westminster',
-		},
-		
-	]
-}
+const provider_list_data = [ 
+	{
+		firstName: 'nick',
+		lastName: 'Sososo',
+		id: 10000,
+		status: 'Awaiting Approval',
+		location: 'New Westminster',
+	},
+	{
+		firstName: 'mick',
+		lastName: 'Sososo',
+		id: 10000,
+		status: 'Awaiting Approval',
+		location: 'New Westminster',
+	},
+	{
+		firstName: 'erik',
+		lastName: 'Sososo',
+		id: 30000,
+		status: 'Awaiting Submission',
+		location: 'New Westminster',
+	},
+	{
+		firstName: 'precidia',
+		lastName: 'Sososo',
+		id: 20000,
+		status: 'Approval Denied',
+		location: 'New Westminster',
+	},
+	
+]
 
-const admin_list_data = {
-	admins: [
-		{
-			id: 1000,
-			firstName: 'nick',
-			lastName: 'lastname',
-		},
-		{
-			id: 1001,
-			firstName: 'marcus',
-			lastName: 'lastnamer',
-		},
-		{
-			id: 1002,
-			firstName: 'alice',
-			lastName: 'theadmin',
-		},
-		{
-			id: 1003,
-			firstName: 'priya',
-			lastName: 'theowner',
-		},
-	]
-}
+
+const admin_list_data = [
+	{
+		id: 1000,
+		firstName: 'nick',
+		lastName: 'lastname',
+	},
+	{
+		id: 1001,
+		firstName: 'marcus',
+		lastName: 'lastnamer',
+	},
+	{
+		id: 1002,
+		firstName: 'alice',
+		lastName: 'theadmin',
+	},
+	{
+		id: 1003,
+		firstName: 'priya',
+		lastName: 'theowner',
+	},
+]
 
 const user_data = [
 	{
