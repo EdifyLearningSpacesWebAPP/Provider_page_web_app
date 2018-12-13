@@ -350,6 +350,10 @@ app.get('/landing_page', (req, res) => {
 	res.render('landing_page.hbs')
 });
 
+app.get('/', (req, res) => {
+	res.render('landing_page.hbs')
+});
+
 app.get('/reset_pass_msg', (req, res) => {
     res.render('reset_pass_msg.hbs')
 });
