@@ -2,7 +2,7 @@ var mysql = require('mysql');
 
 
 const send_email = require("./components/send_email")
-const createConnection = require("./createConnection")
+//const createConnection = require("./createConnection")
 
 /**
  * Creates a connection to the database.
@@ -364,7 +364,7 @@ function retrievelicenses(user_id) {
         criminal: {status: 'submission is required', admin_notes: 'No note.', name: 'criminal', filename: 'no file'},
         siteplan: {status: 'submission is required', admin_notes: 'No note.', name: 'siteplan', filename: 'no file'},
         floorplan: {status: 'submission is required', admin_notes: 'No note.', name: 'floorplan', filename: 'no file'},
-        reference: {status: 'submission is required', admin_notes: 'No note.', name: 'reference', filename: 'no file'},
+        references: {status: 'submission is required', admin_notes: 'No note.', name: 'reference', filename: 'no file'},
         fireplan: {status: 'submission is required', admin_notes: 'No note.', name: 'fireplan', filename: 'no file'},
         imm: {status: 'submission is required', admin_notes: 'No note.', name: 'imm', filename: 'no file'},
     }
