@@ -116,7 +116,35 @@ function filterList(list, id, fname, lname, status) {
 }
 
 app.get('/status', userSessionCheck, (request, response) => {
-    db.retrievelicenses(request.session.user.id)
+
+    var resolved = {
+        criminal: {status: 'Approved', admin_notes: 'Great job!', name: 'criminal', filename: 'no file'},
+        siteplan: {status: 'Awaiting Approval', admin_notes: '', name: 'siteplan', filename: 'no file'},
+        floorplan: {status: 'Denied', admin_notes: 'You are missing information from Section A.', name: 'floorplan', filename: 'no file'},
+        references: {status: 'submission is required', admin_notes: 'No note.', name: 'reference', filename: 'no file'},
+        fireplan: {status: 'submission is required', admin_notes: 'No note.', name: 'fireplan', filename: 'no file'},
+        imm: {status: 'submission is required', admin_notes: 'No note.', name: 'imm', filename: 'no file'},
+    }
+
+    console.log(resolved)
+
+    response.render('status.hbs', {
+        fireplanStatus: resolved['fireplan'].status,
+        fireplanNotes: resolved['fireplan'].admin_notes,
+        criminalStatus: resolved['criminal'].status,
+        criminalNotes: resolved['criminal'].admin_notes,
+        siteplanStatus: resolved['siteplan'].status,
+        siteplanNotes: resolved['siteplan'].admin_notes,
+        refStatus: resolved['references'].status,
+        refNotes: resolved['references'].admin_notes,
+        floorplanStatus: resolved['floorplan'].status,
+        floorplanNotes: resolved['floorplan'].admin_notes,
+        immnStatus: resolved['imm'].status,
+        immNotes: resolved['imm'].admin_notes,
+
+    })
+
+    /*db.retrievelicenses(request.session.user.id)
     .then((resolved) => {
 
         console.log(resolved);
@@ -140,19 +168,28 @@ app.get('/status', userSessionCheck, (request, response) => {
         console.log(error);
         response.send('error')
 
-    });
+    });*/
 
 });
 
 
 app.post('/status', (req, res) => {
-    db.retrievelicenses(req.session.user.id)
+    var resolved = {
+        criminal: {status: 'Accepted', admin_notes: 'Great job!', name: 'criminal', filename: 'no file'},
+        siteplan: {status: 'Awaiting Approval', admin_notes: '', name: 'siteplan', filename: 'no file'},
+        floorplan: {status: 'Denied', admin_notes: 'You are missing information from Section A.', name: 'floorplan', filename: 'no file'},
+        references: {status: 'submission is required', admin_notes: 'No note.', name: 'reference', filename: 'no file'},
+        fireplan: {status: 'submission is required', admin_notes: 'No note.', name: 'fireplan', filename: 'no file'},
+        imm: {status: 'submission is required', admin_notes: 'No note.', name: 'imm', filename: 'no file'},
+    }
+    res.send(resolved)
+    /*db.retrievelicenses(req.session.user.id)
     .then((resolved) =>{
         res.send(resolved)
     }).catch((error) => {
         console.log(error);
         response.send('error');
-    });
+    });*/
 });
 
 app.get('/provider_edit', adminSessionCheck, (request, response) => {
@@ -246,12 +283,12 @@ app.post('/provider_edit', adminSessionCheck, (request, response) => {
 
 app.get('/settings', userSessionCheck, (req, res) => {
     res.render('settings.hbs', {
-        name: req.session.user.fname + ' ' + req.session.user.lname,
-        email: req.session.user.email
+        name: 'firstname lastname',
+        email: 'user@user.com'
 
     });
 });
-
+/*
 app.post('/settings_name', (req, res) => {
     var fname = req.body.fname
     var lname = req.body.lname
@@ -306,7 +343,7 @@ app.post('/settings_password', (req, res) => {
         });
     });    
 });
-
+*/
 
 
 app.get('/landing_page', (req, res) => {
@@ -412,7 +449,8 @@ app.get('/licenses', (req, res) => {
 });
 
 app.post('/licenses', (req, res) => {
-  
+    res.render('license.hbs')
+  /*
     if (req.files == undefined) {
         return res.status(400).send('No files were uploaded.');
     } else {
@@ -445,24 +483,16 @@ app.post('/licenses', (req, res) => {
                 res.send(error)
             })
         }) 
-    }
+    }*/
 });
 
-app.get('/test', (req, res) => {
-    db.getLicense(2).then(function(resolved) {
-        console.log(resolved);
-
-        res.render('test.hbs', {
-        //license: testData.provider_list_data
-    })
-    })
-    
-});
 
 app.get('/account_creation', (req, res) => {
 	res.render('account_creation.hbs')
 });
 app.post('/account_creation', (req, res) => {
+    res.redirect('/landing_page')
+    /*
     if(req.body.type =="check_email"){
         db.check_email(req.body)
         .then((resolved) =>{
@@ -495,7 +525,7 @@ app.post('/account_creation', (req, res) => {
         res.send(error)
 })
 
-    }
+    }*/
 
 
 })
@@ -526,6 +556,10 @@ app.get('/provider_list', adminSessionCheck, (req, res, list) => {
 });
 
 app.post('/provider_list', (req, res) => {
+    res.render('provider_list.hbs', {
+        userData: testData.provider_list_data
+    })
+    /*
     console.log('prolist');
     db.getUsers(0)
     .then((resolved) => {
@@ -544,7 +578,7 @@ app.post('/provider_list', (req, res) => {
     }).catch((error) => {
         console.log(error);
         res.send('error')
-    })
+    })*/
 });
 
 
@@ -566,7 +600,10 @@ app.get('/admin_list', superSessionCheck, (req, res) => {
 })
 
 app.post('/filter_admin_list', (req, res) => {
-    var id = req.body.Idsearch
+    res.render('admin_list.hbs', {
+        admins: testData.admin_list_data
+    })
+    /*var id = req.body.Idsearch
     var fname = req.body.fnamesearch
     var lname = req.body.lnamesearch
 
@@ -581,11 +618,14 @@ app.post('/filter_admin_list', (req, res) => {
     }).catch((error) => {
         console.log(error);
         res.send('error');
-    })
+    })*/
 });
 
 app.post('/create_admin', (req, res) => {
-    console.log(req.body);
+    res.render('admin_edit.hbs', {
+        userData: testData.admin_edit_data
+    })
+    /*console.log(req.body);
     var fname = req.body.fname
     var lname = req.body.lname
     var password = req.body.password
@@ -596,7 +636,7 @@ app.post('/create_admin', (req, res) => {
         res.send(resolved)
     }).catch((error) => {
         res.sendStatus(500)
-    });
+    });*/
 });
 
 app.get('/admin_edit', superSessionCheck, (req, res) => {
@@ -751,46 +791,3 @@ app.post('/reset/:token', function(req, res) {
 });
 
 
-
-app.post('/licenses', (req, res) => {
-    if (Object.keys(req.files).length == 0) {
-        return res.status(400).send('No files were uploaded.');
-    } else {
-        // The name of the input field (i.e. "sampleFile") is used to retrieve the uploaded file
-        let sampleFile = req.files.pic;
-        var note = req.body.notes
-        console.log(req.files);
-
-        crypto.pseudoRandomBytes(16, function(err, raw) {
-            if (err) return callback(err);
-            var filename = raw.toString('hex') + path.extname(req.files.pic.name);
-
-            verify_license.verify_license(req.body).then((data) => {
-
-                sampleFile.mv('C:/ProgramData/MySQL/MySQL Server 8.0/Uploads/'+ filename, function(err) {
-
-                    if (err) {
-                    res.status(500).send(err);
-                    }
-                    
-                });
-            db.addNote(note, 'user_notes', req.session.user.id)
-                .then((resolved) => {
-                    res.send('File uploaded!');
-                }).catch((error) => {
-                    res.sendStatus(500)
-                    console.log(error);
-                });
-            db.addLicense(filename, req.body.type, req.body.notes, 1)
-                .then((resolved) => {
-                    res.send('File uploaded!');
-                }).catch((error) => {
-                    res.sendStatus(500)
-                    console.log(error);
-                });
-            }).catch((error) => {
-                res.send(error)
-            });
-        })
-
-    }});
