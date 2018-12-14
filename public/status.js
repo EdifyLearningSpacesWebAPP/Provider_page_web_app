@@ -108,7 +108,7 @@ function request_status(){
         type: 'POST',
         data: JSON.stringify({user:1}),
         contentType: 'application/json',
-        url: 'http://localhost:8080/status',
+        url: '/status',
         success: function(data){
             console.log(data)
 
